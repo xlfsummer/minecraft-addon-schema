@@ -1,0 +1,77 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Minecraft behavior pack manifest shchema",
+    "type": "object",
+    "definitions": {
+        "description": {
+            "type": "string"
+        },
+        "version": {
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 3,
+            "items": { "type": "integer" },
+            "default": [1, 0, 0]
+        },
+        "uuid": {
+            "type": "string",
+            "pattern": "^[\\da-f]{4}([\\da-f]{4}-){4}[\\da-f]{12}$"
+        }
+    },
+    "properties": {
+        "format_version": {
+            "type": "integer"
+        },
+        "header": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "$ref": "#/definitions/uuid"
+                },
+                "version": {
+                    "$ref": "#/definitions/version"
+                }
+            }
+        },
+        "modules": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "uuid": {
+                        "$ref": "#/definitions/uuid"
+                    },
+                    "version": {
+                        "$ref": "#/definitions/version"
+                    }
+                }
+            }
+        },
+        "dependencies": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "$ref": "#/definitions/uuid"
+                    },
+                    "version": {
+                        "$ref": "#/definitions/version"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,177 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Minecraft addon filter",
+    "definitions": {
+        "test_item": {
+            "type": "object",
+            "properties": {
+                "test": {
+                    "title": "the name of the test to apply.",
+                    "type": "string",
+                    "oneOf": [
+                        {
+                            "description": "Compares the current time with a float value in the range (0.0, 1.0). 0.0= Noon 0.25= Sunset 0.5= Midnight 0.75= Sunrise",
+                            "enum": [
+                                "clock_time"
+                            ]
+                        },
+                        {
+                            "description": "Returns true when the subject entity has the named ability.",
+                            "enum": [
+                                "has_ability"
+                            ]
+                        }
+                    ]
+                },
+                "subject": {
+                    "type": "string",
+                    "title": "The subject of this filter test.",
+                    "default": "self",
+                    "oneOf": [
+                        {
+                            "const": "other",
+                            "description": "The other member of an interaction, not the caller."
+                        },
+                        {
+                            "const": "parent",
+                            "description": "The caller's current parent."
+                        },
+                        {
+                            "const": "player",
+                            "description": "The player involved with the interaction."
+                        },
+                        {
+                            "const": "self",
+                            "description": "The entity or object calling the test"
+                        },
+                        {
+                            "const": "target",
+                            "description": "The caller's current target."
+                        }
+                    ]
+                },
+                "operator":{
+                    "title": "The comparison to apply with 'value'.",
+                    "type":"string",
+                    "default": "equals",
+                    "oneOf": [
+                        {
+                            "description": "Test for inequality.",
+                            "const": "!="
+                        },
+                        {
+                            "description": "Test for less-than the value.",
+                            "const": "<"
+                        },
+                        {
+                            "description": "Test for less-than or equal to the value.",
+                            "const": "<="
+                        },
+                        {
+                            "description": "Test for inequality.",
+                            "const": "<>"
+                        },
+                        {
+                            "description": "Test for equality.",
+                            "enum": [ "=", "==" ]
+                        },
+                        {
+                            "description": "Test for greater-than the value.",
+                            "const": ">"
+                        },
+                        {
+                            "description": "Test for greater-than or equal to the value.",
+                            "const": ">="
+                        },
+                        {
+                            "description": "Test for equality.",
+                            "const": "equals"
+                        },
+                        {
+                            "description": "Test for inequality.",
+                            "const": "not"
+                        }
+                    ]
+                },
+                "value": {}
+            },
+            "required": [
+                "test"
+            ],
+            "additionalProperties": false,
+            "if": {
+                "properties": {
+                    "test": {
+                        "const": "clock_time"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "value"
+                ],
+                "properties": {
+                    "value": {
+                        "description": "A floating point value.",
+                        "type": "number"
+                    }
+                }
+            },
+            "else":{
+                "if":{
+                    "properties": {
+                        "test": {
+                            "const": "has_ability"
+                        }
+                    }
+                },
+                "then":{
+                    "required": ["value"],
+                    "properties": {
+                        "value": {
+                            "description": "The Ability type to test",
+                            "type": "string",
+                            "enum": [
+                                "flySpeed",
+                                "flying",
+                                "instabuild",
+                                "invulnerable",
+                                "lightning",
+                                "mayfly",
+                                "mute",
+                                "noclip",
+                                "walkSpeed",
+                                "worldbuilder"
+                            ]
+                        }
+                    }
+                },
+                "else": {
+
+                }
+            }
+        }
+    },
+    "oneOf": [
+        {
+            "$ref": "#/definitions/test_item"
+        },
+        {
+            "properties": {
+                "all_of": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/test_item"
+                    }
+                },
+                "any_of": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/test_item"
+                    }
+                }
+            },
+            "additionalProperties": false
+        }
+    ]
+}

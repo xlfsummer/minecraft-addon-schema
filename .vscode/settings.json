@@ -1,0 +1,16 @@
+{
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "/*Behavior_Pack*/manifest.json"
+            ],
+            "url": "./schema/behavior-manifest.json"
+        },
+        {
+            "fileMatch": [
+                "/*Behavior_Pack*/entities/*.json"
+            ],
+            "url": "./schema/minecraft-entity.json"
+        }
+    ]
+}

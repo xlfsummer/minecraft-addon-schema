@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "schema-demo",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "type": {
+           "type": "string"
+        }
+    },
+    "if": {
+        "properties": {
+            "type": {
+                "const": "t"
+            }
+        }
+    },
+    "then": {
+        "required": ["t"]
+    }
+}
